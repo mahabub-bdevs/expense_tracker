@@ -47,7 +47,7 @@ class MainScreen extends StatelessWidget {
           : FloatingActionButton(
               shape: const CircleBorder(),
               onPressed: () {
-             //   Get.toNamed(AppRoutes.addProduct);
+                Get.toNamed(AppRoutes.insightStatistics);
               },
               backgroundColor: colors.primary,
               child: const Icon(Icons.add, color: Colors.white),

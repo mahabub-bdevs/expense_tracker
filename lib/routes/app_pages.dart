@@ -1,6 +1,16 @@
+import 'package:expense_tracker/features/addMoney/binding/money_binding.dart';
+import 'package:expense_tracker/features/addMoney/view/money_details_screen.dart';
 import 'package:expense_tracker/features/cards/binding/card_binding.dart';
 import 'package:expense_tracker/features/cards/view/card_screen.dart';
+import 'package:expense_tracker/features/home/view/transaction_details_screen.dart';
+import 'package:expense_tracker/features/insightStatistics/binding/insight_binding.dart';
+import 'package:expense_tracker/features/insightStatistics/view/add_balance_screen.dart';
+import 'package:expense_tracker/features/insightStatistics/view/money_screen.dart';
+import 'package:expense_tracker/features/insightStatistics/widgets/money_to_receive_screen.dart';
+import 'package:expense_tracker/features/insightStatistics/widgets/transaction_form_screen.dart';
 import 'package:get/get.dart';
+import '../features/addMoney/view/money_view_screen.dart';
+import '../features/insightStatistics/binding/transaction_binding.dart';
 import 'app_routes.dart';
 
 import '../features/splash/view/splash_screen.dart';
@@ -35,9 +45,44 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: AppRoutes.transactionDetailsScreen,
+      page: () => const TransactionDetailsScreen(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
       name: AppRoutes.card,
       page: () => const CardScreen(),
       binding: CardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.insightStatistics,
+      page: () => const AddBalanceScreen(),
+      binding: InsightBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.money,
+      page: () => const MoneyScreen(),
+      binding: TransactionBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.transactionFormScreen,
+      page: () => const TransactionFormScreen(),
+      binding: TransactionBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.moneyToReceiveScreen,
+      page: () => const MoneyToReceiveScreen(),
+      binding: TransactionBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.moneyViewScreen,
+      page: () => const MoneyViewScreen(),
+      binding: MoneyBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.moneyDetailsScreen,
+      page: () => const MoneyDetailsScreen(),
+      binding: MoneyBinding(),
     ),
   ];
 }

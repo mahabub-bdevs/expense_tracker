@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PaymentCardItem extends StatelessWidget {
-  const PaymentCardItem({super.key});
+  final VoidCallback? paymentOnTap;
+  final VoidCallback? bankonTap;
+  const PaymentCardItem({super.key, this.paymentOnTap, this.bankonTap});
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +38,13 @@ class PaymentCardItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 PaymentMethodCard(
-                  onTap: () {
-                    debugPrint("Click Add Balance");
-                  },
+                  onTap: paymentOnTap,
                   imagePath: IconPath.addCircleIcon,
                   bankName: "ADD PAYMENT",
                 ),
                 15.w.horizontalSpace,
                 PaymentMethodCard(
+                  onTap: bankonTap,
                   imagePath: IconPath.bankIcon,
                   bankName: "BANK BALANCE",
                 ),

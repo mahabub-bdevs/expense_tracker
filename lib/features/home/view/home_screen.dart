@@ -1,11 +1,14 @@
 import 'package:expense_tracker/core/core.dart';
 import 'package:expense_tracker/core/utils/app_icons.dart';
+import 'package:expense_tracker/features/home/controller/home_controller.dart';
+import 'package:expense_tracker/features/insightStatistics/controller/transaction_controller.dart';
+import 'package:expense_tracker/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../controller/home_controller.dart';
 import '../widgets/circular_percentage_indicator.dart';
 import '../widgets/drawer_information_item.dart';
+import '../widgets/empty_data_item.dart';
 import '../widgets/sidebar_tile_item.dart';
 import '../widgets/transaction_tile_item.dart';
 
@@ -14,8 +17,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final expanseController = Get.put(TransactionController());
     final controller = Get.find<HomeController>();
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -24,13 +27,13 @@ class HomeScreen extends StatelessWidget {
         title: CustomText(text: "WellCome", fontSize: getSp(12)),
       ),
       drawer: Padding(
-        padding: EdgeInsets.only(top: 100),
+        padding: EdgeInsets.only(top: getHeight(100)),
         child: Drawer(
           backgroundColor: AppColors.exBg2,
           width: 400,
           child: Column(
             children: [
-              DrawerInformationItem(
+              const DrawerInformationItem(
                 name: 'Md Mahabub Alam',
                 description: 'Flutter Developer',
               ),
@@ -39,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.backgroundLight.withValues(alpha: 0.3),
                 height: 8,
               ),
-              SidebarTileItem(
+              const SidebarTileItem(
                 imagePath: IconPath.shippingBoxIcon,
                 name: 'Get Premium',
               ),
@@ -48,22 +51,43 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.backgroundLight.withValues(alpha: 0.3),
                 height: 8,
               ),
-              SidebarTileItem(imagePath: IconPath.recordsIcon, name: 'Records'),
-              SidebarTileItem(imagePath: IconPath.bankIcon, name: 'Bank Sync'),
-              SidebarTileItem(imagePath: IconPath.importIcon, name: 'Import'),
+              const SidebarTileItem(
+                imagePath: IconPath.recordsIcon,
+                name: 'Records',
+              ),
+              const SidebarTileItem(
+                imagePath: IconPath.bankIcon,
+                name: 'Bank Sync',
+              ),
               SidebarTileItem(
+                onTap: () {
+                  Get.toNamed(AppRoutes.moneyViewScreen);
+                },
+                imagePath: IconPath.importIcon,
+                name: 'Import',
+              ),
+              const SidebarTileItem(
                 imagePath: IconPath.invoicePaperIcon,
                 name: 'Receipts',
               ),
-              SidebarTileItem(imagePath: IconPath.priceTagIcon, name: 'Tags'),
-              SidebarTileItem(imagePath: IconPath.balanceIcon, name: 'Cards'),
-              SidebarTileItem(
+              const SidebarTileItem(
+                imagePath: IconPath.priceTagIcon,
+                name: 'Tags',
+              ),
+              const SidebarTileItem(
+                imagePath: IconPath.balanceIcon,
+                name: 'Cards',
+              ),
+              const SidebarTileItem(
                 imagePath: IconPath.addCircleIcon,
                 name: 'Set Budget',
               ),
-              SidebarTileItem(imagePath: IconPath.cvvIcon, name: 'CVV'),
-              SidebarTileItem(imagePath: IconPath.todoIcon, name: 'Lists'),
-              SidebarTileItem(
+              const SidebarTileItem(imagePath: IconPath.cvvIcon, name: 'CVV'),
+              const SidebarTileItem(
+                imagePath: IconPath.todoIcon,
+                name: 'Lists',
+              ),
+              const SidebarTileItem(
                 imagePath: IconPath.settingIcon,
                 name: 'Settings',
               ),
@@ -74,7 +98,7 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [AppColors.exBg3, AppColors.exBg2, AppColors.exBg1],
             begin: AlignmentGeometry.topLeft,
@@ -91,11 +115,14 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.warningDark,
             ),
             4.h.verticalSpace,
-            CustomText(
-              text: " \$ 25251.00",
-              fontSize: getSp(20),
-              color: AppColors.backgroundLight,
-            ),
+            Obx(() {
+              final data = controller.availableBalance.value;
+              return CustomText(
+                text: controller.isMinus.value
+                    ? "- ৳ ${data.abs().toStringAsFixed(2)}"
+                    : "৳ ${data.toStringAsFixed(2)}",
+              );
+            }),
             80.h.verticalSpace,
             Expanded(
               child: Stack(
@@ -114,7 +141,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           blurStyle: BlurStyle.inner,
                           blurRadius: 5.0,
-                          offset: Offset(0, 10),
+                          offset: const Offset(0, 10),
                           spreadRadius: 5.0,
                         ),
                       ],
@@ -125,27 +152,43 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomText(text: "My transactions"),
+                          const CustomText(text: "My transactions"),
                           15.h.verticalSpace,
                           Expanded(
-                            child: ListView.separated(
-                              padding: EdgeInsets.zero,
-                              separatorBuilder: (context, index) {
-                                return SizedBox(height: getHeight(10));
-                              },
-                              itemCount: controller.transferData.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                final data = controller.transferData[index];
-                                return TransactionTileItem(
-                                  title: data.title,
-                                  subTitle: data.date,
-                                  balance: data.amount.toString(),
-                                  iconPath: data.iconPath,
-                                  boxColor: data.itemColor,
-                                );
-                              },
-                            ),
+                            child: Obx(() {
+                              if (expanseController.expenseData.isEmpty) {
+                                return const Center(child: EmptyDataItem());
+                              }
+                              return ListView.separated(
+                                padding: EdgeInsets.zero,
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(height: getHeight(10));
+                                },
+                                itemCount: expanseController.expenseData.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  final data =
+                                      expanseController.expenseData[index];
+                                  return TransactionTileItem(
+                                    onTap: () {
+                                      Get.toNamed(
+                                        AppRoutes.transactionDetailsScreen,
+                                        arguments: {
+                                          "data": data,
+                                          "controller": expanseController,
+                                          "index": index,
+                                        },
+                                      );
+                                    },
+                                    title: data.category,
+                                    subTitle: data.date,
+                                    balance: data.amount.toString(),
+                                    iconPath: data.category[0],
+                                    boxColor: AppColors.primaryVariantLight,
+                                  );
+                                },
+                              );
+                            }),
                           ),
                         ],
                       ),
@@ -166,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                           ],
                           end: AlignmentGeometry.bottomEnd,
                           begin: AlignmentGeometry.topCenter,
-                          stops: [0.0, 0.5],
+                          stops: const [0.0, 0.5],
                         ),
                       ),
                       child: CircularPercentageIndicator(
@@ -194,7 +237,7 @@ class HomeScreen extends StatelessWidget {
                           ],
                           end: AlignmentGeometry.bottomEnd,
                           begin: AlignmentGeometry.topCenter,
-                          stops: [0.0, 0.5],
+                          stops: const [0.0, 0.5],
                         ),
                       ),
                       child: CircularPercentageIndicator(

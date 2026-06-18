@@ -13,6 +13,7 @@ class IconPath {
   static const String shippingBoxIcon = '${asset}shipping_box.svg';
   static const String todoIcon = '${asset}todo.svg';
   static const String manuIcon = '${asset}manu_icon.svg';
+  static const String emptyIcon = '${asset}empty_icon.svg';
 
   // Add other SVG icon names below:
   // static const String home = '${asset}home.svg';

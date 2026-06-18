@@ -1,5 +1,7 @@
+import 'package:expense_tracker/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../core/core.dart';
 import '../widgets/payment_card_item.dart';
 import '../widgets/profile_header_widget.dart';
@@ -29,7 +31,9 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: AppDimensions.spaceXXL.h),
               const ProfileSettingsSectionWidget(),
               SizedBox(height: AppDimensions.spaceXXL.h),
-              PaymentCardItem()
+              PaymentCardItem(paymentOnTap: (){
+                Get.toNamed(AppRoutes.moneyToReceiveScreen);
+              },),
             ],
           ),
         ),

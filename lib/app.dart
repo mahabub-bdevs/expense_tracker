@@ -42,7 +42,8 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844), // iPhone 14 baseline
       minTextAdapt: true,
       splitScreenMode: true,
-      useInheritedMediaQuery: true, // Required for DevicePreview to work correctly
+      useInheritedMediaQuery:
+          true, // Required for DevicePreview to work correctly
       builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,

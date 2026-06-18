@@ -1,0 +1,59 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'add_money_model.dart';
+
+
+class AddMoneyModelAdapter extends TypeAdapter<AddMoneyModel> {
+  @override
+  final int typeId = 1;
+
+  @override
+  AddMoneyModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AddMoneyModel(
+      id: fields[0] as int,
+      transaction: fields[1] as String,
+      amount: fields[2] as String,
+      currency: fields[3] as String,
+      relation: fields[4] as String,
+      paymentMethod: fields[5] as String,
+      description: fields[6] as String,
+      date: fields[7] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, AddMoneyModel obj) {
+    writer
+      ..writeByte(8)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.transaction)
+      ..writeByte(2)
+      ..write(obj.amount)
+      ..writeByte(3)
+      ..write(obj.currency)
+      ..writeByte(4)
+      ..write(obj.relation)
+      ..writeByte(5)
+      ..write(obj.paymentMethod)
+      ..writeByte(6)
+      ..write(obj.description)
+      ..writeByte(7)
+      ..write(obj.date);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AddMoneyModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
