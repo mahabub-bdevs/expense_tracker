@@ -18,11 +18,12 @@ class CardScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: CustomText(text: "Wallet", fontSize: getSp(12)),
         actions: [
-          CustomSvgIcon(assetName: IconPath.manuIcon),
+          const CustomSvgIcon(assetName: IconPath.manuIcon),
           SizedBox(width: getWidth(20)),
         ],
       ),
@@ -39,7 +40,7 @@ class CardScreen extends StatelessWidget {
             ],
             end: AlignmentGeometry.bottomEnd,
             begin: AlignmentGeometry.topLeft,
-            stops: [0.0, 0.3, 0.7, 1.5],
+            stops: const [0.0, 0.3, 0.7, 1.5],
           ),
         ),
         child: SingleChildScrollView(
@@ -60,18 +61,25 @@ class CardScreen extends StatelessWidget {
                 radius: BorderRadius.circular(getRadius(5)),
               ),
               10.h.verticalSpace,
-              SizedBox(
-                height: getHeight(215),
-                child: CardSwiper(
-                  cardsCount: controller.myCards.length,
-                  numberOfCardsDisplayed: controller.myCards.length >= 3
-                      ? 3
-                      : controller.myCards.length,
-                  backCardOffset: const Offset(0, 40),
-                  scale: 0.9,
-                  cardBuilder: (context, index, x, y) =>
-                      controller.myCards[index],
-                ),
+              Obx(
+                () => controller.cardData.isEmpty
+                    ? const SizedBox(
+                        height: 215,
+                        child: Center(child: Text("কোনো কার্ড নেই")),
+                      )
+                    : SizedBox(
+                        height: getHeight(215),
+                        child: CardSwiper(
+                          cardsCount: controller.myCards.length,
+                          numberOfCardsDisplayed: controller.myCards.length >= 3
+                              ? 3
+                              : controller.myCards.length,
+                          backCardOffset: const Offset(0, 40),
+                          scale: 0.9,
+                          cardBuilder: (context, index, x, y) =>
+                              controller.myCards[index],
+                        ),
+                      ),
               ),
               35.h.verticalSpace,
               Padding(
@@ -80,10 +88,15 @@ class CardScreen extends StatelessWidget {
                   right: getWidth(25),
                 ),
                 child: CreditCardFormItem(
+                  cardType: controller.cardTypeClt,
+                  balance: controller.balanceClt,
                   cardHolderName: controller.cardHolderClt,
                   cardNumber: controller.cardNumberClt,
                   expiration: controller.expirationClt,
                   securityCode: controller.securityCodeClt,
+                  onTap: () {
+                    controller.cardItem();
+                  },
                 ),
               ),
             ],

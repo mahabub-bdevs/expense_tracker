@@ -7,12 +7,18 @@ class CreditCardFormItem extends StatelessWidget {
   final TextEditingController cardHolderName;
   final TextEditingController expiration;
   final TextEditingController securityCode;
+  final VoidCallback? onTap;
+  final TextEditingController balance;
+  final TextEditingController cardType;
   const CreditCardFormItem({
     super.key,
     required this.cardNumber,
     required this.cardHolderName,
     required this.expiration,
     required this.securityCode,
+    this.onTap,
+    required this.balance,
+    required this.cardType,
   });
 
   @override
@@ -71,6 +77,10 @@ class CreditCardFormItem extends StatelessWidget {
               hintText: "Cardholder name",
             ),
             SizedBox(height: getHeight(20)),
+            CustomTextField(controller: cardType, hintText: "Card Type"),
+            SizedBox(height: getHeight(20)),
+            CustomTextField(controller: balance, hintText: "Balance"),
+            SizedBox(height: getHeight(20)),
             Row(
               children: [
                 Expanded(
@@ -91,25 +101,28 @@ class CreditCardFormItem extends StatelessWidget {
             20.h.verticalSpace,
             Align(
               alignment: AlignmentGeometry.center,
-              child: Container(
-                width: getWidth(100),
-                padding: EdgeInsetsGeometry.only(
-                  top: getHeight(8),
-                  bottom: getHeight(8),
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(getRadius(10)),
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.warningDark.withValues(alpha: 0.5),
-                      AppColors.warningLight,
-                    ],
-                    begin: AlignmentGeometry.centerLeft,
-                    end: AlignmentGeometry.centerRight,
-                    tileMode: TileMode.mirror,
+              child: GestureDetector(
+                onTap: onTap,
+                child: Container(
+                  width: getWidth(100),
+                  padding: EdgeInsetsGeometry.only(
+                    top: getHeight(8),
+                    bottom: getHeight(8),
                   ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(getRadius(10)),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.warningDark.withValues(alpha: 0.5),
+                        AppColors.warningLight,
+                      ],
+                      begin: AlignmentGeometry.centerLeft,
+                      end: AlignmentGeometry.centerRight,
+                      tileMode: TileMode.mirror,
+                    ),
+                  ),
+                  child: const Center(child: CustomText(text: "Next")),
                 ),
-                child: Center(child: CustomText(text: "Next")),
               ),
             ),
           ],

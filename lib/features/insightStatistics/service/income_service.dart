@@ -18,6 +18,7 @@ class IncomeService {
   }
 
   Future<void> updateIncome(int index, AddMoneyModel income) async {
-    await _box.putAt(index, income);
+    final key = _box.keyAt(index);
+    await _box.putAt(key, income);
   }
 }

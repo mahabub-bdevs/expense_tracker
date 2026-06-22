@@ -1,13 +1,13 @@
+import 'package:expense_tracker/core/core.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/utils/app_size_class.dart';
 
 class BankCardWidget extends StatelessWidget {
   final String holderName;
   final String balance;
   final String cardNumber;
   final List<Color> gradientColors;
-  final String cardType; // e.g., "VISA" or "MasterCard"
+  final String cardType;
+  final String cardDescription;
 
   const BankCardWidget({
     super.key,
@@ -16,6 +16,7 @@ class BankCardWidget extends StatelessWidget {
     required this.cardNumber,
     required this.gradientColors,
     this.cardType = "VISA",
+    this.cardDescription = "Amazon Platinum",
   });
 
   @override
@@ -30,7 +31,7 @@ class BankCardWidget extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: gradientColors.last.withOpacity(0.3),
+            color: gradientColors.last.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 8),
           ),
@@ -40,51 +41,49 @@ class BankCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // কার্ড হোল্ডারের নাম
+          //Card Holder Name
           Text(
             holderName,
             style: TextStyle(
               color: Colors.white,
-              fontSize: getSp(20),
+              fontSize: getSp(18),
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: getHeight(4)),
-          const Text(
-            "Amazon Platinum",
-            style: TextStyle(color: Colors.white70, fontSize: 14),
+          //Card Description
+          CustomText(
+            text: cardDescription,
+            color: AppColors.backgroundLight.withValues(alpha: 0.6),
+            fontSize: getSp(10),
           ),
 
           const Spacer(),
 
-          // কার্ড নাম্বার
-          Text(
-            cardNumber,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: getSp(18),
-              letterSpacing: 2,
-            ),
+          // Card Number
+          CustomText(
+            text: cardNumber,
+            color: Colors.white,
+            fontSize: getSp(18),
+            letterSpacing: 2.0,
           ),
-          SizedBox(height: getHeight(12)),
+          SizedBox(height: getHeight(5)),
 
-          // ব্যালেন্স এবং লোগো
+          //Balance and Card Type
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                balance,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: getSp(24),
-                  fontWeight: FontWeight.bold,
-                ),
+              CustomText(
+                text: "৳$balance",
+                color: Colors.white,
+                fontSize: getSp(15),
+                fontWeight: FontWeight.bold,
               ),
               Text(
                 cardType,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: getSp(22),
+                  fontSize: getSp(18),
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,
                 ),

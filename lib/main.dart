@@ -1,3 +1,4 @@
+import 'package:expense_tracker/features/cards/model/card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,14 +19,10 @@ Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ExpenseModelAdapter());
   Hive.registerAdapter(AddMoneyModelAdapter());
+  Hive.registerAdapter(CardModelAdapter());
   await Hive.openBox<ExpenseModel>('expense');
   await Hive.openBox<AddMoneyModel>('income_box');
-  runApp(
-    // DevicePreview(
-    //   // Set to false in production; true during development to preview layouts.
-    //   enabled: true,
-    //   builder: (context) =>
-    const MyApp(),
-    // ),
-  );
+  await Hive.openBox<CardModel>('card');
+  await Hive.openBox('profile');
+  runApp(const MyApp());
 }

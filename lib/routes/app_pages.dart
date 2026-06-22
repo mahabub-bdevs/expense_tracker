@@ -1,16 +1,22 @@
 import 'package:expense_tracker/features/addMoney/binding/money_binding.dart';
 import 'package:expense_tracker/features/addMoney/view/money_details_screen.dart';
 import 'package:expense_tracker/features/cards/binding/card_binding.dart';
+import 'package:expense_tracker/features/cards/view/card_details_screen.dart';
 import 'package:expense_tracker/features/cards/view/card_screen.dart';
-import 'package:expense_tracker/features/home/view/transaction_details_screen.dart';
+import 'package:expense_tracker/features/cards/view/card_view_screen.dart';
+import 'package:expense_tracker/features/profile/widgets/profile_input_item.dart';
+import 'package:expense_tracker/features/transaction/view/transaction_details_screen.dart';
 import 'package:expense_tracker/features/insightStatistics/binding/insight_binding.dart';
 import 'package:expense_tracker/features/insightStatistics/view/add_balance_screen.dart';
 import 'package:expense_tracker/features/insightStatistics/view/money_screen.dart';
 import 'package:expense_tracker/features/insightStatistics/widgets/money_to_receive_screen.dart';
 import 'package:expense_tracker/features/insightStatistics/widgets/transaction_form_screen.dart';
+import 'package:expense_tracker/features/transaction/view/transaction_view_screen.dart';
 import 'package:get/get.dart';
 import '../features/addMoney/view/money_view_screen.dart';
 import '../features/insightStatistics/binding/transaction_binding.dart';
+import '../features/profile/binding/profile_binding.dart';
+import '../features/transaction/binding/transaction_view_binding.dart';
 import 'app_routes.dart';
 
 import '../features/splash/view/splash_screen.dart';
@@ -83,6 +89,26 @@ class AppPages {
       name: AppRoutes.moneyDetailsScreen,
       page: () => const MoneyDetailsScreen(),
       binding: MoneyBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.transaction,
+      page: () => const TransactionViewScreen(),
+      binding: TransactionViewBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.profileInputItem,
+      page: () => const ProfileInputItem(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.cardViewScreen,
+      page: () => const CardViewScreen(),
+      binding: CardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.cardDetailsScreen,
+      page: () => const CardDetailsScreen(),
+      binding: CardBinding(),
     ),
   ];
 }

@@ -17,6 +17,7 @@ class ExpenseService {
   }
 
   Future<void> updateExpense(int index, ExpenseModel expense) async {
-    await _box.putAt(index, expense);
+    final key = _box.keyAt(index);
+    await _box.putAt(key, expense);
   }
 }

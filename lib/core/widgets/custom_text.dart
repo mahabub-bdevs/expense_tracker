@@ -11,7 +11,7 @@ class CustomText extends StatelessWidget {
   final TextAlign? textAlign;
   final int? maxLines;
   final TextOverflow? overflow;
-
+  final double letterSpacing;
   const CustomText({
     super.key,
     required this.text,
@@ -21,6 +21,7 @@ class CustomText extends StatelessWidget {
     this.textAlign,
     this.maxLines,
     this.overflow,
+    this.letterSpacing = 1.0,
   });
 
   @override
@@ -34,6 +35,7 @@ class CustomText extends StatelessWidget {
         fontSize: getSp(fontSize ?? AppDimensions.fontS),
         fontWeight: fontWeight ?? FontWeight.normal,
         color: color ?? context.appColors.textPrimary,
+        letterSpacing: letterSpacing,
       ),
     );
   }

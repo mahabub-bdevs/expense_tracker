@@ -11,4 +11,8 @@ class AppRoutes {
   static const String moneyToReceiveScreen = '/moneyToReceiveScreen';
   static const String moneyViewScreen = '/moneyViewScreen';
   static const String moneyDetailsScreen = '/moneyDetailsScreen';
+  static const String transaction = '/transaction';
+  static const String profileInputItem = '/profileInputItem';
+  static const String cardViewScreen = '/cardViewScreen';
+  static const String cardDetailsScreen = '/cardDetailsScreen';
 }

@@ -43,7 +43,7 @@ class AddBalanceScreen extends StatelessWidget {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
               AppColors.exBg3,
@@ -61,7 +61,7 @@ class AddBalanceScreen extends StatelessWidget {
             SizedBox(height: getHeight(80)),
             SizedBox(height: getHeight(15)),
             AddBalanceTextFiled(controller: controller.amountController),
-            Spacer(),
+            const Spacer(),
             AddBalanceBottom(
               onTap: () {
                 controller.addBalanceBottom();

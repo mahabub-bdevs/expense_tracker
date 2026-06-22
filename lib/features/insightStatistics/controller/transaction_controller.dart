@@ -19,7 +19,7 @@ class TransactionController extends GetxController {
   final RxList<ExpenseModel> expenseData = <ExpenseModel>[].obs;
   final int id = 0;
 
-  final homeController=Get.find<HomeController>();
+  final homeController = Get.find<HomeController>();
 
   final receivedAmountController = TextEditingController();
 
@@ -68,9 +68,10 @@ class TransactionController extends GetxController {
       await _expenseService.addExpense(newExpense);
       await expenseList();
       homeController.loadBalance();
-      clearExpenseFields();
-
+      homeController.loadChartData();
+      homeController.loadTodayChart();
       Get.snackbar("সফল!", "ডাটা সেভ হয়েছে");
+      clearExpenseFields();
     } else {
       Get.snackbar("এরর", "অনুগ্রহপূর্বক ফরমটি পূরণ করুন");
     }
@@ -81,6 +82,8 @@ class TransactionController extends GetxController {
       await _expenseService.deleteExpense(expenseId);
       await expenseList();
       homeController.loadBalance();
+      homeController.loadChartData();
+      homeController.loadTodayChart();
       Get.back();
       Get.snackbar(
         "সফল!",
@@ -89,7 +92,6 @@ class TransactionController extends GetxController {
         colorText: Colors.white,
       );
     } catch (e) {
-
       Get.snackbar(
         "এরর!",
         "ডিলিট করা যায়নি: $e",
@@ -108,6 +110,4 @@ class TransactionController extends GetxController {
     paymentMethodClt.clear();
     descriptionClt.clear();
   }
-
-
 }

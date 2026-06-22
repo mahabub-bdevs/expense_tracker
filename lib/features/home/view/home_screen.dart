@@ -1,24 +1,24 @@
 import 'package:expense_tracker/core/core.dart';
 import 'package:expense_tracker/core/utils/app_icons.dart';
+import 'package:expense_tracker/core/widgets/custom_animation_text.dart';
 import 'package:expense_tracker/features/home/controller/home_controller.dart';
-import 'package:expense_tracker/features/insightStatistics/controller/transaction_controller.dart';
+import 'package:expense_tracker/features/profile/controller/profile_controller.dart';
 import 'package:expense_tracker/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../widgets/circular_percentage_indicator.dart';
 import '../widgets/drawer_information_item.dart';
-import '../widgets/empty_data_item.dart';
 import '../widgets/sidebar_tile_item.dart';
-import '../widgets/transaction_tile_item.dart';
+import '../widgets/today_bar_chart.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final expanseController = Get.put(TransactionController());
     final controller = Get.find<HomeController>();
+    final profileController = Get.put(ProfileController());
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -31,67 +31,81 @@ class HomeScreen extends StatelessWidget {
         child: Drawer(
           backgroundColor: AppColors.exBg2,
           width: 400,
-          child: Column(
-            children: [
-              const DrawerInformationItem(
-                name: 'Md Mahabub Alam',
-                description: 'Flutter Developer',
-              ),
-              18.h.verticalSpace,
-              Divider(
-                color: AppColors.backgroundLight.withValues(alpha: 0.3),
-                height: 8,
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.shippingBoxIcon,
-                name: 'Get Premium',
-              ),
-              18.h.verticalSpace,
-              Divider(
-                color: AppColors.backgroundLight.withValues(alpha: 0.3),
-                height: 8,
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.recordsIcon,
-                name: 'Records',
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.bankIcon,
-                name: 'Bank Sync',
-              ),
-              SidebarTileItem(
-                onTap: () {
-                  Get.toNamed(AppRoutes.moneyViewScreen);
-                },
-                imagePath: IconPath.importIcon,
-                name: 'Import',
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.invoicePaperIcon,
-                name: 'Receipts',
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.priceTagIcon,
-                name: 'Tags',
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.balanceIcon,
-                name: 'Cards',
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.addCircleIcon,
-                name: 'Set Budget',
-              ),
-              const SidebarTileItem(imagePath: IconPath.cvvIcon, name: 'CVV'),
-              const SidebarTileItem(
-                imagePath: IconPath.todoIcon,
-                name: 'Lists',
-              ),
-              const SidebarTileItem(
-                imagePath: IconPath.settingIcon,
-                name: 'Settings',
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Obx(
+                  () => DrawerInformationItem(
+                    onEditeTap: () {
+                      Get.toNamed(AppRoutes.profileInputItem);
+                    },
+                    name: profileController.nameClt.text.trim(),
+                    description: profileController.descriptionClt.text.trim(),
+                    image: profileController.imagePath.value,
+                  ),
+                ),
+                18.h.verticalSpace,
+                Divider(
+                  color: AppColors.backgroundLight.withValues(alpha: 0.3),
+                  height: 8,
+                ),
+                const SidebarTileItem(
+                  imagePath: IconPath.shippingBoxIcon,
+                  name: 'Get Premium',
+                ),
+                18.h.verticalSpace,
+                Divider(
+                  color: AppColors.backgroundLight.withValues(alpha: 0.3),
+                  height: 8,
+                ),
+                const SidebarTileItem(
+                  imagePath: IconPath.recordsIcon,
+                  name: 'Records',
+                ),
+                const SidebarTileItem(
+                  imagePath: IconPath.bankIcon,
+                  name: 'Bank Sync',
+                ),
+                const SidebarTileItem(
+                  imagePath: IconPath.importIcon,
+                  name: 'Import',
+                ),
+                SidebarTileItem(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.moneyViewScreen);
+                  },
+                  imagePath: IconPath.invoicePaperIcon,
+                  name: 'Add Money',
+                ),
+                SidebarTileItem(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.transaction);
+                  },
+                  imagePath: IconPath.priceTagIcon,
+                  name: 'My Transactions',
+                ),
+                SidebarTileItem(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.cardViewScreen);
+                  },
+                  imagePath: IconPath.balanceIcon,
+                  name: 'Cards',
+                ),
+                const SidebarTileItem(
+                  imagePath: IconPath.addCircleIcon,
+                  name: 'Set Budget',
+                ),
+                const SidebarTileItem(imagePath: IconPath.cvvIcon, name: 'CVV'),
+                const SidebarTileItem(
+                  imagePath: IconPath.todoIcon,
+                  name: 'Lists',
+                ),
+                const SidebarTileItem(
+                  imagePath: IconPath.settingIcon,
+                  name: 'Settings',
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -109,18 +123,27 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: getHeight(130)),
-            CustomText(
-              text: "Available Balance",
-              fontSize: getSp(13),
-              color: AppColors.warningDark,
+            CustomAnimationText(
+              index: 1,
+              baseDuration: 1130,
+              child: CustomText(
+                text: "Available Balance",
+                fontSize: getSp(13),
+                color: AppColors.warningDark,
+              ),
             ),
             4.h.verticalSpace,
             Obx(() {
               final data = controller.availableBalance.value;
-              return CustomText(
-                text: controller.isMinus.value
-                    ? "- ৳ ${data.abs().toStringAsFixed(2)}"
-                    : "৳ ${data.toStringAsFixed(2)}",
+              return CustomAnimationText(
+                index: 1,
+                baseDuration: 1350,
+                beginOffset: const Offset(-5, 0),
+                child: CustomText(
+                  text: controller.isMinus.value
+                      ? "- ৳ ${data.abs().toStringAsFixed(2)}"
+                      : "৳ ${data.toStringAsFixed(2)}",
+                ),
               );
             }),
             80.h.verticalSpace,
@@ -128,67 +151,97 @@ class HomeScreen extends StatelessWidget {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(getRadius(20)),
-                      color: AppColors.exBg1.withValues(alpha: 0.4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.backgroundLight.withValues(
-                            alpha: 0.05,
+                  CustomAnimationText(
+                    index: 1,
+                    staggerDelay: 300,
+                    baseDuration: 1900,
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(getRadius(20)),
+                        color: AppColors.exBg1.withValues(alpha: 0.4),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.backgroundLight.withValues(
+                              alpha: 0.05,
+                            ),
+                            blurStyle: BlurStyle.inner,
+                            blurRadius: 5.0,
+                            offset: const Offset(0, 10),
+                            spreadRadius: 5.0,
                           ),
-                          blurStyle: BlurStyle.inner,
-                          blurRadius: 5.0,
-                          offset: const Offset(0, 10),
-                          spreadRadius: 5.0,
+                        ],
+                      ),
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: getHeight(110),
+                            left: getWidth(25),
+                            right: getWidth(25),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: "Today Chart",
+                                fontSize: getSp(14),
+                                color: AppColors.warningDark,
+                              ),
+                              20.h.verticalSpace,
+                              Obx(
+                                () => TodayBarChart(
+                                  data: controller.todayChartData.value,
+                                  height: 250,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.only(top: getHeight(80), left: 25),
+                  ),
+                  Positioned(
+                    top: -80,
+                    right: 50,
+                    child: CustomAnimationText(
+                      index: 1,
+                      baseDuration: 1500,
+                      beginOffset: const Offset(2, 4),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CustomText(text: "My transactions"),
-                          15.h.verticalSpace,
-                          Expanded(
-                            child: Obx(() {
-                              if (expanseController.expenseData.isEmpty) {
-                                return const Center(child: EmptyDataItem());
-                              }
-                              return ListView.separated(
-                                padding: EdgeInsets.zero,
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(height: getHeight(10));
-                                },
-                                itemCount: expanseController.expenseData.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  final data =
-                                      expanseController.expenseData[index];
-                                  return TransactionTileItem(
-                                    onTap: () {
-                                      Get.toNamed(
-                                        AppRoutes.transactionDetailsScreen,
-                                        arguments: {
-                                          "data": data,
-                                          "controller": expanseController,
-                                          "index": index,
-                                        },
-                                      );
-                                    },
-                                    title: data.category,
-                                    subTitle: data.date,
-                                    balance: data.amount.toString(),
-                                    iconPath: data.category[0],
-                                    boxColor: AppColors.primaryVariantLight,
-                                  );
-                                },
-                              );
-                            }),
+                          Container(
+                            height: getHeight(120),
+                            width: getWidth(120),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.exBg3.withValues(alpha: 0.1),
+                                  AppColors.exBg1,
+                                ],
+                                end: AlignmentGeometry.bottomEnd,
+                                begin: AlignmentGeometry.topCenter,
+                                stops: const [0.0, 0.5],
+                              ),
+                            ),
+                            child: Obx(
+                              () => CircularPercentageIndicator(
+                                percentage: controller.incomePercent.value,
+                                size: 120,
+                                backgroundColor: AppColors.exBg1,
+                                fontColor: AppColors.warningDark,
+                                fontSize: getSp(15),
+                                strokeWidth: 15,
+                              ),
+                            ),
+                          ),
+                          CustomText(
+                            text: "Income",
+                            fontSize: getSp(13),
+                            color: AppColors.backgroundLight,
+                            fontWeight: FontWeight.w800,
                           ),
                         ],
                       ),
@@ -196,57 +249,44 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Positioned(
                     top: -80,
-                    right: 50,
-                    child: Container(
-                      height: getHeight(120),
-                      width: getWidth(120),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.exBg3.withValues(alpha: 0.1),
-                            AppColors.exBg1,
-                          ],
-                          end: AlignmentGeometry.bottomEnd,
-                          begin: AlignmentGeometry.topCenter,
-                          stops: const [0.0, 0.5],
-                        ),
-                      ),
-                      child: CircularPercentageIndicator(
-                        percentage: 40,
-                        size: 120,
-                        backgroundColor: AppColors.exBg1,
-                        fontColor: AppColors.warningDark,
-                        fontSize: getSp(15),
-                        strokeWidth: 15,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: -80,
                     left: 50,
-                    child: Container(
-                      height: getHeight(120),
-                      width: getWidth(120),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.exBg3.withValues(alpha: 0.1),
-                            AppColors.exBg1,
-                          ],
-                          end: AlignmentGeometry.bottomEnd,
-                          begin: AlignmentGeometry.topCenter,
-                          stops: const [0.0, 0.5],
-                        ),
-                      ),
-                      child: CircularPercentageIndicator(
-                        percentage: 50,
-                        size: 120,
-                        backgroundColor: AppColors.exBg1,
-                        fontColor: AppColors.warningDark,
-                        fontSize: getSp(15),
-                        strokeWidth: 15,
+                    child: CustomAnimationText(
+                      index: 1,
+                      baseDuration: 1500,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: getHeight(120),
+                            width: getWidth(120),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.exBg3.withValues(alpha: 0.1),
+                                  AppColors.exBg1,
+                                ],
+                                end: AlignmentGeometry.bottomEnd,
+                                begin: AlignmentGeometry.topCenter,
+                                stops: const [0.0, 0.5],
+                              ),
+                            ),
+                            child: Obx(
+                              () => CircularPercentageIndicator(
+                                percentage: controller.expensePercent.value,
+                                size: 120,
+                                backgroundColor: AppColors.exBg1,
+                                fontColor: AppColors.warningDark,
+                                fontSize: getSp(15),
+                                strokeWidth: 15,
+                              ),
+                            ),
+                          ),
+                          CustomText(
+                            text: "Expense",
+                            fontSize: getSp(13),
+                            color: AppColors.backgroundLight,
+                          ),
+                        ],
                       ),
                     ),
                   ),

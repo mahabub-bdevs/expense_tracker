@@ -18,7 +18,7 @@ class CircularPercentageIndicator extends StatefulWidget {
     required this.percentage,
     this.size = 80,
     this.progressColor = Colors.white,
-    this.backgroundColor = const Color(0xFF7C3AED), // Purple
+    this.backgroundColor = const Color(0xFF7C3AED),
     this.strokeWidth = 5,
     this.textStyle,
     this.suffix = '%',
@@ -43,19 +43,13 @@ class _CircularPercentageIndicatorState
   @override
   void initState() {
     super.initState();
-    _setupAnimation();
-  }
-
-  void _setupAnimation() {
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
-
     _animation = Tween<double>(begin: 0, end: widget.percentage).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOutCubic),
     );
-
     _controller.forward();
   }
 
@@ -63,8 +57,14 @@ class _CircularPercentageIndicatorState
   void didUpdateWidget(CircularPercentageIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percentage != widget.percentage) {
-      _controller.dispose();
-      _setupAnimation();
+      _animation =
+          Tween<double>(
+            begin: _animation.value,
+            end: widget.percentage,
+          ).animate(
+            CurvedAnimation(parent: _controller, curve: Curves.easeInOutCubic),
+          );
+      _controller.forward(from: 0);
     }
   }
 
@@ -85,7 +85,6 @@ class _CircularPercentageIndicatorState
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Custom Paint for Circle
               CustomPaint(
                 size: Size(widget.size, widget.size),
                 painter: CirclePainter(
@@ -95,8 +94,6 @@ class _CircularPercentageIndicatorState
                   strokeWidth: widget.strokeWidth,
                 ),
               ),
-
-              // Center Text
               CustomText(
                 text: '${_animation.value.toStringAsFixed(0)}${widget.suffix}',
                 fontSize: widget.fontSize,

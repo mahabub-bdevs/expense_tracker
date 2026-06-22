@@ -16,7 +16,7 @@ class IncomeController extends GetxController {
 
   final RxList<AddMoneyModel> incomeData = <AddMoneyModel>[].obs;
 
-  final homeController=Get.find<HomeController>();
+  final homeController = Get.find<HomeController>();
   final IncomeService _incomeService = IncomeService();
 
   @override
@@ -41,6 +41,8 @@ class IncomeController extends GetxController {
       await _incomeService.deleteIncome(index);
       loadAllIncome();
       homeController.loadBalance();
+      homeController.loadChartData();
+      homeController.loadTodayChart();
       Get.back();
       Get.snackbar(
         "সফল!",
@@ -85,9 +87,11 @@ class IncomeController extends GetxController {
         await loadAllIncome();
         clearIncomeFields();
         homeController.loadBalance();
-        debugPrint("All Success");
+        homeController.loadChartData();
+        homeController.loadTodayChart();
+        Get.snackbar("সফল!", "ডাটা সেভ হয়েছে");
+        await Future.delayed(const Duration(milliseconds: 300));
         Get.offAllNamed(AppRoutes.main);
-        Get.snackbar("সফল!", "ডাটা সেভ হয়েছে");
       } catch (e) {
         Get.snackbar("এরর", "ডাটা সেভ করতে সমস্যা হয়েছে: $e");
       }
@@ -104,6 +108,4 @@ class IncomeController extends GetxController {
     incomePaymentMethodClt.clear();
     receivedAmountController.clear();
   }
-
-
 }

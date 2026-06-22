@@ -1,8 +1,6 @@
 import 'package:expense_tracker/core/utils/app_images.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../../core/core.dart';
 import '../controller/splash_controller.dart';
 
@@ -18,7 +16,7 @@ class SplashScreen extends StatelessWidget {
       body: Container(
         height: getHeight(double.infinity),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration:const BoxDecoration(
           gradient: LinearGradient(
             colors: [AppColors.exBg1, AppColors.exBg2, AppColors.exBg3],
             end: AlignmentGeometry.bottomRight,

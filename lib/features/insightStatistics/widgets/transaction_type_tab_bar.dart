@@ -23,9 +23,9 @@ class TransactionTypeTabBar extends StatelessWidget {
               child: Container(
                 height: getHeight(50),
                 color: controller.selectedTab.value == 0
-                    ? Color(0xFFFF5B1E).withValues(alpha: 0.9)
-                    : Color(0xFFFF5B1E).withValues(alpha: 0.3),
-                child: Center(child: CustomText(text: "INCOME")),
+                    ? const Color(0xFFFF5B1E).withValues(alpha: 0.9)
+                    : const Color(0xFFFF5B1E).withValues(alpha: 0.3),
+                child: const Center(child: CustomText(text: "INCOME")),
               ),
             ),
           ),
@@ -37,7 +37,7 @@ class TransactionTypeTabBar extends StatelessWidget {
                 color: controller.selectedTab.value == 1
                     ? AppColors.warningLight.withValues(alpha: 0.9)
                     : AppColors.warningLight.withValues(alpha: 0.3),
-                child: Center(child: CustomText(text: "EXPENSE")),
+                child: const Center(child: CustomText(text: "EXPENSE")),
               ),
             ),
           ),

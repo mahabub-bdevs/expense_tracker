@@ -2,6 +2,9 @@
 
 part of 'add_money_model.dart';
 
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class AddMoneyModelAdapter extends TypeAdapter<AddMoneyModel> {
   @override

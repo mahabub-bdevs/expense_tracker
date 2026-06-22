@@ -19,7 +19,7 @@ class AddBalanceBottom extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFFF5B1E).withValues(alpha: 0.7),
+              const Color(0xFFFF5B1E).withValues(alpha: 0.7),
               AppColors.warningLight.withValues(alpha: 0.8),
             ],
             begin: AlignmentGeometry.centerLeft,

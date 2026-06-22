@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
 
-class MoneyController extends GetxController {
+class TransactionViewController extends GetxController {
   final RxBool isSearch = false.obs;
 }

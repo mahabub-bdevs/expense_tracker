@@ -1,12 +1,13 @@
 import 'package:expense_tracker/core/core.dart';
+import 'package:expense_tracker/features/cards/view/update_alart_dilog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/show_custom_dialog.dart';
 
-class MoneyDetailsScreen extends StatelessWidget {
-  const MoneyDetailsScreen({super.key});
+class CardDetailsScreen extends StatelessWidget {
+  const CardDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +18,8 @@ class MoneyDetailsScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: Colors.transparent,
-
-        title: CustomText(
-          text: data.relation,
-          fontSize: getSp(12),
-          color: AppColors.backgroundLight,
-        ),
         leading: Padding(
           padding: EdgeInsets.only(left: getWidth(15)),
           child: IconButton(
@@ -32,30 +28,62 @@ class MoneyDetailsScreen extends StatelessWidget {
             },
             icon: Icon(
               Icons.arrow_back_ios,
-              size: getSp(20),
+              size: getSp(24),
               color: AppColors.backgroundLight,
             ),
           ),
         ),
+        title: CustomText(
+          text: data.cardHolderName,
+          fontSize: getSp(11),
+          color: AppColors.backgroundLight,
+        ),
         actions: [
+          IconButton(
+            onPressed: () {
+              controller.prefillCard(data);
+              showUpdateDialog(
+                context,
+                controller.cardNumberClt,
+                controller.expirationClt,
+                controller.cardTypeClt,
+                controller.securityCodeClt,
+                controller.balanceClt,
+                controller.cardHolderClt,
+                () {
+                  controller.getUpdate(index);
+                },
+              );
+            },
+            icon: Icon(
+              Icons.edit_outlined,
+              size: getSp(20),
+              color: AppColors.backgroundLight,
+            ),
+          ),
           IconButton(
             onPressed: () {
               showCustomDialog(
                 context,
                 () {
-                  controller.getIncomeDeleted(index);
+                  if (controller != null && index != null) {
+                    controller.getDeleted(index);
+                  }
                 },
                 "হ্যাঁ",
                 "না",
                 "মুছে ফেলতে চান?",
-                "আপনি কি নিশ্চিত যে আপনি এই আইটেমটি ডিলিট করতে চান? এটি আর ফিরিয়ে আনা যাবে না।",
-                data.relation,
+                "আপনি কি নিশ্চিত যে আপনি এই কার্ড ডিলিট করতে চান? এটি আর ফিরিয়ে আনা যাবে না।",
+                data.cardHolderName,
               );
-
-              //
             },
-            icon: Icon(Icons.delete, size: getSp(20)),
+            icon: Icon(
+              Icons.delete_rounded,
+              size: getSp(24),
+              color: AppColors.backgroundLight,
+            ),
           ),
+
           SizedBox(width: getWidth(10)),
         ],
       ),
@@ -66,34 +94,34 @@ class MoneyDetailsScreen extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               AppColors.exBg3,
-              AppColors.exBg3,
-              AppColors.exBg2,
               AppColors.exBg1,
+              AppColors.exBg2,
               AppColors.exBg3,
             ],
-            end: AlignmentGeometry.bottomCenter,
+            stops: [0.0, 0.4, 0.9, 1.5],
             begin: AlignmentGeometry.topLeft,
-            stops: [0.0, 0.0, 0.2, 0.4, 1.5],
+            end: AlignmentGeometry.bottomCenter,
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.only(left: getWidth(15), right: getWidth(20)),
+          padding: EdgeInsets.only(left: getWidth(15), right: getWidth(15)),
           child: Column(
             children: [
               SizedBox(height: getHeight(80)),
-              TextFormate(name: "Date", value: data.date),
-              5.h.verticalSpace,
-              TextFormate(name: "Relation", value: data.relation),
-              5.h.verticalSpace,
-              TextFormate(name: "Currently", value: data.currency),
-              5.h.verticalSpace,
-              TextFormate(name: "Payment Method", value: data.paymentMethod),
-              5.h.verticalSpace,
-              TextFormate(name: "Amount", value: data.amount),
-              5.h.verticalSpace,
-              TextFormate(name: "Description", value: data.description),
-              5.h.verticalSpace,
-              TextFormate(name: "Transaction", value: data.transaction),
+              TextFormate(name: "ID", value: index.toString()),
+              10.h.verticalSpace,
+              TextFormate(name: "Card Holder Name", value: data.cardHolderName),
+              10.h.verticalSpace,
+              TextFormate(name: "Card Number", value: data.cardNumber),
+              10.h.verticalSpace,
+              TextFormate(name: "Expiry Date", value: data.expiryDate),
+              10.h.verticalSpace,
+              TextFormate(name: "Card Type", value: data.cardType),
+              10.h.verticalSpace,
+              TextFormate(name: "Security Code", value: data.securityCode),
+              10.h.verticalSpace,
+              TextFormate(name: "Balance", value: data.balance),
+              10.h.verticalSpace,
             ],
           ),
         ),

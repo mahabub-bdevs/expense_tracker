@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../core/widgets/show_custom_dialog.dart';
+
 class TransactionDetailsScreen extends StatelessWidget {
   const TransactionDetailsScreen({super.key});
 
@@ -21,9 +23,19 @@ class TransactionDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              if (controller != null && index != null) {
-                controller.expanseDeleted(index);
-              }
+              showCustomDialog(
+                context,
+                () {
+                  if (controller != null && index != null) {
+                    controller.expanseDeleted(index);
+                  }
+                },
+                "হ্যাঁ",
+                "না",
+                "মুছে ফেলতে চান?",
+                "আপনি কি নিশ্চিত যে আপনি এই আইটেমটি ডিলিট করতে চান? এটি আর ফিরিয়ে আনা যাবে না।",
+                transactionData.category,
+              );
             },
             icon: Icon(Icons.delete, size: getSp(20)),
           ),
@@ -58,7 +70,10 @@ class TransactionDetailsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               80.h.verticalSpace,
-              TextFormate(name: 'Id ', value: transactionData.id.toString()),
+              TextFormate(
+                name: 'Date  ',
+                value: transactionData.date.toString(),
+              ),
               5.h.verticalSpace,
               TextFormate(name: 'Category', value: transactionData.category),
               5.h.verticalSpace,
